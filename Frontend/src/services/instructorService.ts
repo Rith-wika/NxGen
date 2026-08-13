@@ -1,0 +1,148 @@
+import axiosInstance from "@/api/axiosInstance";
+
+export interface InstructorData {
+    id?: string;
+    name: string;
+    email: string;
+    phone: string;
+    employee_id: string;
+    date_of_joining: string;
+    assigned_courses: number[]; // Array of course IDs
+    qualification: string;
+    experience: string;
+    bank_account_number: string;
+    ifsc_code: string;
+    pan_number: string;
+    aadhaar_number: string;
+    documents?: File; // For upload
+    is_active: boolean;
+}
+
+type FormPayload = Record<string, unknown>;
+
+interface ChangePasswordPayload {
+    current_password?: string;
+    old_password: string;
+    new_password: string;
+    confirm_password: string;
+}
+
+const getHeaders = () => {
+    const token = localStorage.getItem("access_token");
+    return {
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "multipart/form-data"
+        }
+    };
+};
+
+export const instructorService = {
+    // Admin: Add instructor
+    createInstructor: async (data: FormPayload) => {
+        try {
+            // Use FormData for file uploads
+            const formData = new FormData();
+            Object.keys(data).forEach(key => {
+                const value = data[key];
+                if (key === 'assigned_courses' && Array.isArray(value)) {
+                    value.forEach((id) => formData.append('assigned_courses', String(id)));
+                } else if (value instanceof File || value instanceof Blob) {
+                    formData.append(key, value);
+                } else if (value !== null && value !== undefined) {
+                    formData.append(key, String(value));
+                }
+            });
+
+            const res = await axiosInstance.post('/api/instructors/register/', formData, getHeaders());
+            return res.data;
+        } catch (error) {
+            console.error("Error creating instructor", error);
+            throw error;
+        }
+    },
+
+    // Admin: List instructors
+    getAllInstructors: async (courseId?: string | number) => {
+        try {
+            const url = courseId ? `/api/instructors/?course_id=${courseId}` : '/api/instructors/';
+            const res = await axiosInstance.get(url, {
+                headers: { "Authorization": `Bearer ${localStorage.getItem("access_token")}` }
+            });
+            return res.data;
+        } catch (error) {
+            console.error("Error fetching instructors", error);
+            throw error;
+        }
+    },
+
+    // Instructor: Get profile
+    getProfile: async () => {
+        try {
+            const res = await axiosInstance.get('/api/instructors/profile/', {
+                headers: { "Authorization": `Bearer ${localStorage.getItem("access_token")}` }
+            });
+            return res.data;
+        } catch (error) {
+            console.error("Error fetching instructor profile", error);
+            throw error;
+        }
+    },
+
+    // Instructor: Update profile
+    updateProfile: async (data: FormPayload) => {
+        try {
+            const formData = new FormData();
+            Object.keys(data).forEach(key => {
+                const value = data[key];
+                if (value instanceof File || value instanceof Blob) {
+                    formData.append(key, value);
+                } else if (value !== null && value !== undefined) {
+                    formData.append(key, String(value));
+                }
+            });
+            const res = await axiosInstance.put('/api/instructors/profile/', formData, getHeaders());
+            return res.data;
+        } catch (error) {
+            console.error("Error updating instructor profile", error);
+            throw error;
+        }
+    },
+
+    // Instructor: Change password
+    changePassword: async (passwords: ChangePasswordPayload) => {
+        try {
+            const res = await axiosInstance.post('/api/auth/change-password/', passwords, {
+                headers: { "Authorization": `Bearer ${localStorage.getItem("access_token")}` }
+            });
+            return res.data;
+        } catch (error) {
+            console.error("Error changing password", error);
+            throw error;
+        }
+    },
+
+    // Instructor: Get assigned courses
+    getMyCourses: async () => {
+        try {
+            const res = await axiosInstance.get('/api/instructors/my-courses/', {
+                headers: { "Authorization": `Bearer ${localStorage.getItem("access_token")}` }
+            });
+            return res.data;
+        } catch (error) {
+            console.error("Error fetching instructor courses", error);
+            throw error;
+        }
+    },
+
+    // Admin/Instructor: Get assignments with filtration
+    getInstructorAssignments: async (params: { instructor_id?: string; course_id?: string; batch_id?: string; status?: string }) => {
+        try {
+            const res = await axiosInstance.get('/api/courses/instructor-assignments/', { params });
+            return res.data;
+        } catch (error) {
+            console.error("Error fetching instructor assignments", error);
+            throw error;
+        }
+    }
+};

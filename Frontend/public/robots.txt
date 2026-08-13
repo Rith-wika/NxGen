@@ -1,0 +1,27 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://nxgentechacademy.com/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 10
+
+# Allow search engines to crawl these directories
+Allow: /courses/
+Allow: /about/
+Allow: /contact/
+Allow: /blogs/
+Allow: /mentors/
+Allow: /why-choose-us/
+Allow: /admin/
+Allow: /admin-login/
+Allow: /dashboard/
+Allow: /register/
+Allow: /student-login/
+Allow: /instructor-login/
+Allow: /*.pdf$
+Allow: /*?*
+
+# Block search engines from crawling these directories/auth pages
+

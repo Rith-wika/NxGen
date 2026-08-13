@@ -1,0 +1,485 @@
+import React, { useState, useEffect } from 'react';
+import { Button } from "@/components/ui/button";
+import { ArrowRight, CheckCircle, Smartphone, Clock, Star, ChevronLeft, ChevronRight, Calendar, Database, Sparkles, Presentation } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Helmet } from 'react-helmet-async';
+import { CourseCarousel } from "@/components/CourseCarousel";
+import { DemoModal } from "@/components/DemoModal";
+import { coursesData } from "@/data/categoryCourses";
+import { blogService, BlogPost } from "@/services/blogService";
+
+const sapCategories = [
+  { title: "SAP Technical & Development", hours: "Advanced coding, configuration, and technical architecture modules.", link: "/courses/sap-technical" },
+  { title: "SAP Functional Modules", hours: "Finance, Materials Management, Sales & Distribution, and more.", link: "/courses/sap-functional" },
+  { title: "SAP Business Technology Platform (BTP)", hours: "Cloud integration and digital transformation modules.", link: "/courses/sap-btp" },
+];
+const sapCourses = [
+  { ...coursesData.find(c => c.id === "sap-abap-on-hana-course-online"), title: "SAP ABAP on S/4 HANA", duration: "8-10 Weeks", link: "/courses/sap-abap-on-hana-course-online" },
+  { ...coursesData.find(c => c.id === "sap-abap-rap"), title: "SAP ABAP & CDS", duration: "8-10 Weeks", link: "/courses/sap-abap-rap" },
+  { ...coursesData.find(c => c.id === "sap-ui5-fiori-training"), title: "SAP FIORI UI5", duration: "40+ Hours", link: "/courses/sap-ui5-fiori-training" },
+  { ...coursesData.find(c => c.id === "sap-basis-s4hana-training"), title: "SAP BASIS", duration: "40+ Hours", link: "/courses/sap-basis-s4hana-training" },
+  { ...coursesData.find(c => c.id === "sap-fico-course-training"), title: "SAP FICO On S4 HANA", duration: "2-3 Months", link: "/courses/sap-fico-course-training" },
+  { ...coursesData.find(c => c.id === "sap-sd-course-training"), title: "SAP SD On S4 HANA", duration: "10-12 Weeks", link: "/courses/sap-sd-course-training" },
+  { ...coursesData.find(c => c.id === "sap-mm-course"), title: "SAP MM On S4 HANA", duration: "8-10 Weeks", link: "/courses/sap-mm-course" },
+  { ...coursesData.find(c => c.id === "sap-pp-course"), title: "SAP PP On S4 HANA", duration: "8-10 Weeks", link: "/courses/sap-pp-course" },
+  { ...coursesData.find(c => c.id === "sap-qm-course"), title: "SAP QM On S4 HANA", duration: "8-10 Weeks", link: "/courses/sap-qm-course" },
+].map(c => ({
+  title: c.title || "",
+  duration: c.duration || "",
+  link: c.link || "",
+  image: c.image && c.image !== "code-icon" ? c.image : undefined
+}));
+
+const trendingCourses = [
+  {
+    title: "Data Analytics",
+    hours: "70 Hours",
+    link: "/courses/data-analytics",
+    image: "/data-analytics.jpg"
+  },
+  {
+    title: "Python",
+    hours: "45 Hours",
+    link: "/courses/python",
+    image: "/python.jpg"
+  },
+  {
+    title: "Digital Marketing",
+    hours: "Multiple Courses",
+    link: "/courses/digital-marketing",
+    image: "/digital-marketing.JPG"
+  },
+  {
+    title: "AIML",
+    hours: "80 Hours",
+    link: "/courses/aiml",
+    image: "/aiml.jpg"
+  },
+  {
+    title: "AI",
+    hours: "80 Hours",
+    link: "/courses/ai",
+    image: "/ai.jpg"
+  },
+];
+
+const HERO_IMAGES = [
+  { src: '/hero-bg-4.png', link: 'https://docs.google.com/forms/d/e/1FAIpQLSdXT8Mx2S5-wBwOrevQ_09OYcvV0oYFFHznNrYg_5RQQ9OBrw/viewform?usp=publish-editor' },
+  { src: '/hero-bg-3.png' },
+  { src: '/hero-bg-1.jpeg' },
+  { src: '/hero-bg-2.jpeg' },
+  { src: '/hero-image.jpg' }
+];
+
+const Home = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
+  const [latestBlogs, setLatestBlogs] = useState<BlogPost[]>([]);
+  const [isLoadingBlogs, setIsLoadingBlogs] = useState(false);
+
+  // Auto-advance carousel every 5 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const fetchLatestBlogs = async () => {
+      try {
+        setIsLoadingBlogs(true);
+        const data = await blogService.getLatestBlogs();
+        setLatestBlogs(data.slice(0, 3)); // Display only 3 latest blogs
+      } catch (error) {
+        console.error("Failed to fetch latest blogs", error);
+      } finally {
+        setIsLoadingBlogs(false);
+      }
+    };
+    fetchLatestBlogs();
+  }, []);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % HERO_IMAGES.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + HERO_IMAGES.length) % HERO_IMAGES.length);
+  };
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+  };
+
+  const siteUrl = "https://nxgentechacademy.com";
+
+  return (
+    <div className="min-h-screen font-sans text-gray-800 overflow-x-hidden">
+      <Helmet>
+        <title>NxGen Tech Academy | Hyderabad</title>
+        <meta name="description" content="NxGen Tech Academy is the leading IT training institute in Hyderabad, offering professional courses in SAP, Python, Data Science, and more with 100% placement assistance." />
+        <link rel="canonical" href={siteUrl} />
+
+        {/* Open Graph Tags */}
+        <meta property="og:title" content="Best IT Training Institute in Hyderabad | NxGen Tech Academy" />
+        <meta property="og:description" content="Join the best IT training institute in Hyderabad for SAP, Python, Data Science, and more. Get 100% placement assistance." />
+        <meta property="og:url" content={siteUrl} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content={`${siteUrl}/og-image.jpg`} />
+      </Helmet>
+
+      {/* Hero Section with Carousel */}
+      <section className="relative bg-white text-gray-800 py-2 lg:py-4 overflow-hidden">
+        <div className="w-full px-4 md:px-10 lg:px-20 mx-auto grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left Content */}
+          <div className="space-y-8 z-10">
+            <div>
+              <p className="text-xl md:text-2xl text-gray-600 font-medium mb-2">Upscale Your Career in IT Industry</p>
+              <h1 className="text-4xl lg:text-5xl font-bold leading-tight text-black">
+                IT Training Institute in Hyderabad
+              </h1>
+            </div>
+
+            <p className="text-lg text-gray-600 font-medium">
+              SAP | SAS | Data Engineer | Salesforce | Data Science
+            </p>
+
+            <div className="flex flex-col sm:flex-row flex-wrap gap-4 pt-2 w-full">
+              <Button asChild size="lg" className="bg-[#000080] hover:bg-[#000080]/90 text-white font-medium text-lg px-8 rounded-md w-full sm:w-auto">
+                <Link to="/all-courses">Explore Courses</Link>
+              </Button>
+            </div>
+
+            <DemoModal
+              isOpen={isDemoModalOpen}
+              onClose={() => setIsDemoModalOpen(false)}
+            />
+
+            <div className="pt-2">
+              <p className="text-base sm:text-lg text-[#000080] leading-snug sm:leading-normal">
+                <span className="font-bold text-xl sm:text-2xl block sm:inline mb-1 sm:mb-0">Extensive</span> <span className="opacity-90">experience in the IT Training &amp; Placement Industry</span>
+              </p>
+              <div className="h-0.5 w-full bg-gray-200 mt-4 max-w-md"></div>
+            </div>
+
+            <div className="pt-6">
+              <p className="text-gray-600 mb-4 font-medium text-sm sm:text-base">Professionals hired by</p>
+              <div className="flex flex-wrap items-center gap-4 sm:gap-8 opacity-70 grayscale hover:grayscale-0 transition-all">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" alt="IBM" className="h-4 sm:h-6 object-contain" />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/43/Cognizant_logo_2022.svg" alt="Cognizant" className="h-4 sm:h-6 object-contain" />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Infosys_logo.svg" alt="Infosys" className="h-5 sm:h-8 object-contain" />
+              </div>
+            </div>
+          </div>
+
+          {/* Right Image Carousel */}
+          <div className="relative flex justify-center lg:justify-end mt-8 lg:mt-0">
+            {/* Carousel Container */}
+            <div className="relative w-full max-w-[600px] h-[300px] sm:h-[400px] lg:h-[600px] mx-auto lg:mx-0">
+              {/* Images */}
+              {HERO_IMAGES.map((image, index) => {
+                const imgElement = (
+                  <img
+                    src={image.src}
+                    alt={`Hero slide ${index + 1}`}
+                    className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-1000 ${index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                      } ${image.link ? 'cursor-pointer' : ''}`}
+                  />
+                );
+
+                return (
+                  <div key={index}>
+                    {image.link ? (
+                      <a href={image.link} target="_blank" rel="noopener noreferrer">
+                        {imgElement}
+                      </a>
+                    ) : (
+                      imgElement
+                    )}
+                  </div>
+                );
+              })}
+
+              {/* Navigation Arrows */}
+              <button
+                onClick={prevSlide}
+                className="absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+                aria-label="Previous slide"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+
+              <button
+                onClick={nextSlide}
+                className="absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+                aria-label="Next slide"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+
+              {/* Carousel Indicators */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+                {HERO_IMAGES.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToSlide(index)}
+                    className={`h-2 rounded-full transition-all duration-300 ${index === currentSlide
+                      ? 'bg-[#000080] w-8'
+                      : 'bg-primary/50 w-2 hover:bg-primary/50'
+                      }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Us */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl font-bold mb-4 text-primary">Why Do Professionals Choose Our Institution?</h2>
+            <div className="w-20 h-1 bg-secondary mx-auto rounded-full mb-6"></div>
+            <p className="text-gray-600 leading-relaxed">
+              Working professionals choose NxGen Tech Academy because we focus on results, relevance, and reliability. We combine academic depth with industry exposure, which strengthens our position among the <b>top software training institutes in Hyderabad with placements.</b>
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              "Expert instructors with 10+ years of industry experience",
+              "Industry-relevant certification programs",
+              "Hands-on labs and real-time project exposure",
+              "100% job placement assistance",
+              "Flexible weekend and weekday schedules",
+              "Global certification guidance"
+            ].map((item, i) => (
+              <div key={i} className="flex items-start gap-4 p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-all border-l-4 border-secondary">
+                <CheckCircle className="w-6 h-6 text-secondary flex-shrink-0 mt-1" />
+                <p className="text-lg font-semibold">{item}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Our Associations */}
+      <section className="py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#000080] via-[#000080] to-[#00004d]" />
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#22c55e]/20 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
+        <div className="absolute inset-0 opacity-[0.06] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] pointer-events-none" />
+
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 border border-white/20 rounded-full text-white text-xs font-bold uppercase tracking-wider mb-4">
+              <Sparkles className="w-3.5 h-3.5 text-[#22c55e]" /> Government Partnership
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Our Associations</h2>
+            <p className="text-white/70 text-lg">Trusted collaborations that strengthen our training ecosystem</p>
+          </div>
+
+          <Link
+            to="/bsnl-skill-development-partner"
+            className="group relative flex flex-col sm:flex-row items-center gap-8 max-w-3xl mx-auto bg-white rounded-[2rem] p-8 sm:p-10 shadow-2xl hover:shadow-[0_25px_60px_-15px_rgba(34,197,94,0.4)] transition-all duration-300 hover:-translate-y-1.5"
+          >
+            <div className="absolute -top-3 -right-3 md:top-6 md:right-6 bg-[#22c55e] text-white text-[10px] md:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md">
+              Official Partner
+            </div>
+
+            <div className="w-28 h-28 shrink-0 rounded-2xl bg-white border border-gray-100 shadow-inner flex items-center justify-center overflow-hidden p-3 group-hover:border-[#22c55e]/40 transition-colors">
+              <img
+                src="/bsnl-logo.png"
+                alt="BSNL Logo"
+                className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
+              />
+            </div>
+
+            <div className="text-center sm:text-left flex-1">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-50 text-[#000080] rounded-full font-bold text-xs uppercase tracking-wide mb-2">
+                <span className="w-1.5 h-1.5 bg-[#22c55e] rounded-full animate-pulse" /> BSNL RTTC Skill Development Partner
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 group-hover:text-[#000080] transition-colors mb-1">BSNL Regional Telecom Training Centre (RTTC), Hyderabad</h3>
+              <p className="text-gray-500 text-sm">Practical training in AI, Cloud, Networking & Telecom technologies</p>
+            </div>
+
+            <div className="hidden sm:flex items-center gap-2 text-[#000080] font-bold shrink-0 bg-[#000080]/5 group-hover:bg-[#000080] group-hover:text-white px-5 py-3 rounded-xl transition-all">
+              View Details <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </Link>
+        </div>
+      </section>
+
+      {/* SAP Academy Feature */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col lg:flex-row gap-12 items-center">
+            <div className="lg:w-1/2">
+              <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1000&auto=format&fit=crop" alt="Students learning" className="rounded-2xl shadow-xl w-full object-cover h-[400px]" />
+            </div>
+            <div className="lg:w-1/2 space-y-6">
+              <div className="inline-block bg-primary/10 text-primary font-bold px-4 py-1 rounded-full text-sm">Featured Program</div>
+              <h2 className="text-3xl lg:text-4xl font-bold text-primary">SAP Academy for Enterprise Solutions</h2>
+              <p className="text-gray-600 leading-relaxed text-lg">
+                Our <b>SAP Academy for Enterprise Solutions</b> prepares professionals to become SAP Certified Experts. The program combines structured coursework with enterprise-level practical implementation.
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-center gap-2 text-gray-700">
+                  <CheckCircle className="w-5 h-5 text-green-500" />
+                  <span>Qualification: Graduate & Master’s Background in Commerce, Management, IT, Engineering, or related fields.</span>
+                </li>
+                <li className="flex items-center gap-2 text-gray-700">
+                  <CheckCircle className="w-5 h-5 text-green-500" />
+                  <span>Prerequisite: Basic understanding of any programming language.</span>
+                </li>
+              </ul>
+              <Button className="bg-secondary hover:bg-secondary/90 text-white mt-4" asChild>
+                <Link to="/all-courses">Explore More <ArrowRight className="ml-2 w-4 h-4" /></Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SAP Courses Grid */}
+      {/* <section className="py-20">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-10 text-center text-primary">SAP Categories</h2>
+          <CourseCarousel items={sapCategories} type="category" />
+        </div>
+      </section> */}
+
+      {/* Trending Courses Carousel */}
+      <section className="py-20">
+        <div className="w-full px-4 md:px-10 lg:px-20 mx-auto">
+          <h2 className="text-3xl font-bold mb-10 text-center text-primary">Trending Courses</h2>
+          <CourseCarousel items={trendingCourses} type="course" />
+        </div>
+      </section>
+
+      {/* SAP Courses Grid */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-10 text-center text-primary">SAP Courses</h2>
+          <CourseCarousel items={sapCourses} type="course" />
+          <div className="text-center mt-10">
+            <Button asChild variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
+              <Link to="/all-courses">View All SAP Courses</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-20 bg-primary/5">
+        <div className="w-full px-4 md:px-10 lg:px-20 mx-auto">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl font-bold mb-4 text-primary">Testimonials</h2>
+            <div className="w-20 h-1 bg-secondary mx-auto rounded-full mb-6"></div>
+            <p className="text-gray-600">Hear from our successful students who transformed their careers with NxGen Tech Academy.</p>
+          </div>
+
+          {/* Video Testimonials */}
+          <div className="mb-20">
+            <h3 className="text-2xl font-bold mb-8 text-primary uppercase tracking-wider">Video Success Stories</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
+              {[
+                { id: "v1", youtubeId: "AZEZc7j5jDg", title: "" },
+                { id: "v2", youtubeId: "Y019HAHgJvc", title: "" },
+                { id: "v3", youtubeId: "f8JehiagC40", title: "" },
+                { id: "v4", youtubeId: "-pkVqNifeOA", title: "" },
+              ].map((video) => (
+                <div key={video.id} className="bg-white rounded-2xl overflow-hidden shadow-xl group hover:shadow-2xl transition-all duration-500 border border-gray-100">
+                  <div className="relative aspect-[9/16] bg-black">
+                    <iframe
+                      className="absolute inset-0 w-full h-full"
+                      src={`https://www.youtube.com/embed/${video.youtubeId}`}
+                      title={video.title}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <h3 className="text-2xl font-bold mb-8 text-primary">Student Experiences</h3>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              { name: "Bhargavi", text: "I have successfully completed my SAP FICO training from NxGen Tech Academy, which gave me a strong understanding of Financial Accounting and Controlling concepts.", course: "SAP FICO" },
+              { name: "Vinod Goud", text: "THIS MONTH I HAVE COMPLETED SAP FICO COURSE. THE TRAINING IS WELL STRUCTURED AND EASY TO UNDERSTAND. COURSE CONTENT PROVIDES HANDS ON PRATICE.", course: "SAP FICO" },
+              { name: "Ritik S. Mourya", text: "I have just completed my FullStack DOT NET training from NxGen Tech Academy. The sessions were very helpful and understanding session throughout the training.", course: "FullStack .NET" },
+            ].map((testimonial, i) => (
+              <div key={i} className="bg-white p-8 rounded-xl shadow-sm relative hover:shadow-md transition-all">
+                <div className="absolute -top-4 left-8 bg-secondary text-white p-2 rounded-full">
+                  <Star className="w-6 h-6 fill-current" />
+                </div>
+                <p className="text-gray-600 mb-6 italic leading-relaxed">"{testimonial.text}"</p>
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-primary">
+                    {testimonial.name[0]}
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-sm">{testimonial.name}</h4>
+                    <p className="text-xs text-secondary">{testimonial.course}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Recent Articles */}
+      {/* <section className="py-20">
+        <div className="w-full px-4 md:px-10 lg:px-20 mx-auto">
+          <h2 className="text-3xl font-bold mb-10 text-center text-primary">Recent Articles</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {isLoadingBlogs ? (
+              <div className="col-span-3 text-center py-10">
+                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mx-auto"></div>
+                <p className="mt-4 text-gray-500">Loading recent articles...</p>
+              </div>
+            ) : latestBlogs.length > 0 ? (
+              latestBlogs.map((blog, i) => (
+                <Link to={`/blogs/${blog.slug}`} key={blog.id || i} className="group cursor-pointer block">
+                  <div className="bg-gray-200 h-48 rounded-lg mb-4 relative overflow-hidden">
+                    <div className="absolute inset-0 bg-primary/20 group-hover:bg-primary/0 transition-colors"></div>
+                    {blog.image_url ? (
+                      <img
+                        src={blog.image_url}
+                        alt={blog.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        onError={(e) => { (e.target as any).src = "https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=800&auto=format&fit=crop"; }}
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-slate-100 flex items-center justify-center">
+                        <Sparkles className="w-10 h-10 text-slate-300" />
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-xs text-secondary font-bold mb-1">
+                    {blog.created_at ? new Date(blog.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : ""}
+                  </p>
+                  <h3 className="font-bold text-lg leading-snug group-hover:text-primary transition-colors line-clamp-2">
+                    {blog.title}
+                  </h3>
+                </Link>
+              ))
+            ) : (
+              <p className="col-span-3 text-center text-gray-500 py-10">No recent articles found.</p>
+            )}
+          </div>
+        </div>
+      </section> */}
+
+
+    </div>
+  );
+};
+
+export default Home;

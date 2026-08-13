@@ -1,0 +1,341 @@
+{
+    "sap-qm-course": {
+        "id": "sap-qm-course",
+        "metaTitle": "SAP QM Course | SAP QM Training with Placement – NXGEN",
+        "metaDescription": "Learn SAP QM Course at NXGEN Tech Academy. Get hands-on SAP training, certification guidance, internship, and 100% job support to build a career in SAP Quality Management.",
+        "whatIs": "\nAre you looking to build expertise in SAP Quality Management (SAP QM) and unlock high-paying career opportunities in the SAP ecosystem? The SAP QM Course at NXGEN Tech Academy is designed to help students and professionals gain industry-relevant skills in quality management processes using SAP ERP and SAP S/4HANA.\n\nSAP QM (Quality Management) is a core module in SAP ERP that helps organizations maintain high product and service quality throughout their business operations. It enables companies to automate inspection processes, manage quality notifications, and ensure compliance with international standards such as ISO and FDA.\n",
+        "whyCourse": "\nChoosing the SAP QM Course at NXGEN Tech Academy can significantly improve your career prospects. Quality management plays a critical role in industries such as manufacturing, pharmaceuticals, automotive, and consumer goods.\n\nSAP QM enables organizations to maintain consistent product quality by integrating quality checks throughout the production and procurement processes. With knowledge gained from the SAP QM training program, professionals can identify and prevent quality issues early, maintain compliance with industry regulations, and enhance customer satisfaction and brand reputation.\n",
+        "keyBenefits": [
+            "Comprehensive training on latest SAP S/4HANA technologies",
+            "Hands-on SAP system practice on live servers",
+            "Expert guidance from SAP-certified instructors",
+            "One-on-one mentoring and interactive doubt-clearing sessions",
+            "Real-time project implementation exposure",
+            "SAP QM training certificate from NXGEN Tech Academy",
+            "Internship opportunities to gain practical experience",
+            "100% job support including resume and interview preparation"
+        ],
+        "whyChooseNxGen": [
+            "Industry-oriented training for real career opportunities",
+            "Live doubt-clearing sessions and practical examples",
+            "Collaborative learning with fellow trainees",
+            "Lifetime access to Learning Management System (LMS)",
+            "Recorded lectures and updated study materials",
+            "Free access to live SAP servers for practice",
+            "Proven track record of placement assistance",
+            "Expert-led training with real implementation experience"
+        ],
+        "keyTopics": [
+            "Material Master – Quality Management View",
+            "Master Inspection Characteristics (MICs)",
+            "Sampling Procedures and Sample Determination",
+            "Defect recording and result recording",
+            "Usage decision processing",
+            "Quality Notifications management",
+            "Quality certificates and COA",
+            "Integration with SAP MM, PP, and PM"
+        ],
+        "careerOpportunities": [
+            "SAP QM Consultant",
+            "Quality Analyst",
+            "Quality Assurance Specialist",
+            "SAP Functional Consultant",
+            "Process Improvement Specialist",
+            "Quality Management Expert",
+            "SAP Functional Specialist",
+            "ERP Quality Manager"
+        ],
+        "feesAndDuration": "\nOur SAP QM classes offer flexible learning schedules with weekday and weekend batches suitable for both students and working professionals.\n\nThe course includes lifetime access to the LMS, recorded lectures, assignments, and practice scenarios. Students also receive free SAP server access for hands-on practice.\n\nFor detailed fee structure and upcoming batch schedules, please register for a counseling session with our training advisors.\n",
+        "conclusion": "Start your SAP QM career with NXGEN Tech Academy today. Our practical training, certification guidance, and career support provide the right foundation for a global SAP career in quality management.",
+        "curriculum": [
+            {
+                "module": "Module 1: Introduction to SAP QM",
+                "topics": [
+                    "Overview of SAP and ERP concepts",
+                    "Introduction to SAP Quality Management (QM)",
+                    "Role of QM in manufacturing and service industries",
+                    "Integration of SAP QM with MM, PP, SD, and PM modules",
+                    "End-user vs SAP QM consultant responsibilities"
+                ]
+            },
+            {
+                "module": "Module 2: Organizational Structure and Basic Configuration",
+                "topics": [
+                    "QM organizational structure (Client, Company Code, Plant)",
+                    "Assignment of QM to plant",
+                    "QM control key and plant parameter configuration",
+                    "Activation of inspection types",
+                    "Number ranges and basic configuration settings"
+                ]
+            },
+            {
+                "module": "Module 3: Master Data in SAP QM",
+                "topics": [
+                    "Material master – QM view configuration",
+                    "Creating and maintaining Master Inspection Characteristics (MIC)",
+                    "Qualitative MIC vs Quantitative MIC",
+                    "Catalogs and selected sets configuration",
+                    "Inspection method creation",
+                    "Sampling procedures and sample determination",
+                    "Quality Info Record (QIR)"
+                ]
+            },
+            {
+                "module": "Module 4: Inspection Planning",
+                "topics": [
+                    "Inspection plan creation",
+                    "Routing and task list integration",
+                    "Assigning MICs to inspection plans",
+                    "Creating inspection points",
+                    "Inspection plan status and version control"
+                ]
+            },
+            {
+                "module": "Module 5: Inspection Processing",
+                "topics": [
+                    "Inspection lot creation",
+                    "Goods Receipt (GR), In-process, and Final inspection",
+                    "Source inspection and Recurring inspection",
+                    "Result recording and Defect recording",
+                    "Usage decision and Stock posting after UD"
+                ]
+            },
+            {
+                "module": "Module 2: organizational Structure and Basic Configuration",
+                "topics": [
+                    "QM organizational structure (Client, Company Code, Plant)",
+                    "Assignment of QM to plant",
+                    "QM control key and plant parameter configuration",
+                    "Activation of inspection types",
+                    "Number ranges and basic configuration settings"
+                ]
+            },
+            {
+                "module": "Module 3: Master Data in SAP QM",
+                "topics": [
+                    "Material master – QM view configuration",
+                    "Creating and maintaining Master Inspection Characteristics (MIC)",
+                    "Qualitative MIC vs Quantitative MIC",
+                    "Catalogs and selected sets configuration",
+                    "Inspection method creation",
+                    "Sampling procedures and sample determination",
+                    "Quality Info Record (QIR)"
+                ]
+            },
+            {
+                "module": "Module 4: Inspection Planning",
+                "topics": [
+                    "Inspection plan creation",
+                    "Routing and task list integration",
+                    "Assigning MICs to inspection plans",
+                    "Creating inspection points",
+                    "Inspection plan status and version control"
+                ]
+            },
+            {
+                "module": "Module 5: Inspection Processing",
+                "topics": [
+                    "Inspection lot creation",
+                    "Goods Receipt (GR), In-process, and Final inspection",
+                    "Source inspection and Recurring inspection",
+                    "Result recording and Defect recording",
+                    "Usage decision and Stock posting after UD"
+                ]
+            },
+            {
+                "module": "Module 6: Quality Notifications",
+                "topics": [
+                    "Overview of quality notifications",
+                    "Notification types and configuration",
+                    "Creating and processing quality notifications",
+                    "Defect analysis and root cause identification",
+                    "Corrective and Preventive Actions (CAPA)"
+                ]
+            },
+            {
+                "module": "Module 7: Certificates and Documentation",
+                "topics": [
+                    "Quality certificate management",
+                    "Certificate of Analysis (COA)",
+                    "Output determination for certificates",
+                    "Certificate print and email configuration"
+                ]
+            },
+            {
+                "module": "Module 8: Integration of SAP QM with Other Modules",
+                "topics": [
+                    "QM integration with SAP MM (Procurement)",
+                    "QM integration with SAP PP (Production)",
+                    "QM integration with SAP SD (Sales)",
+                    "Movement types related to QM",
+                    "Batch management integration"
+                ]
+            },
+            {
+                "module": "Module 9: Reporting and Analytics in SAP QM",
+                "topics": [
+                    "Inspection lot reports",
+                    "Quality level reports",
+                    "Defect analysis reports",
+                    "Vendor evaluation reports",
+                    "KPI tracking and performance monitoring"
+                ]
+            },
+            {
+                "module": "Module 10: Real-Time Business Scenarios and Case Studies",
+                "topics": [
+                    "End-to-end incoming inspection scenario",
+                    "In-process quality control scenario",
+                    "Final inspection with usage decision",
+                    "Vendor quality management scenario",
+                    "Customer complaint handling process"
+                ]
+            },
+            {
+                "module": "Module 11: Advanced Topics in SAP QM",
+                "topics": [
+                    "Dynamic Modification Rule (DMR)",
+                    "Quality levels management and Skip lot concept",
+                    "Audit management overview",
+                    "Introduction to SAP S/4HANA Quality Management"
+                ]
+            },
+            {
+                "module": "Module 12: Implementation and Interview Preparation",
+                "topics": [
+                    "SAP QM implementation lifecycle (ASAP/Activate)",
+                    "Configuration vs master data management",
+                    "Testing phases (Unit, Integration, UAT)",
+                    "Cutover activities and Go-live support",
+                    "Frequently asked SAP QM interview questions"
+                ]
+            }
+        ]
+    },
+    "sap-sd-course-training": {
+        "id": "sap-sd-course-training",
+        "metaTitle": "SAP SD Course | Training with Placement – NxGen Tech Academy",
+        "metaDescription": "Join SAP SD course at NxGen Tech Academy. Learn sales order processing, billing, pricing, and SAP skills with expert training and placement support",
+        "whatIs": "\nThe SAP SD Course at NXGEN Tech Academy is designed to provide a complete understanding of sales processes, order management, pricing, shipping, and billing using SAP S/4HANA.\nThis SAP SD Course Curriculum covers the entire Order-to-Cash (O2C) business cycle, including sales order processing, delivery management, billing integration with finance, and advanced reporting. Through this structured SAP SD Course Curriculum, students gain both functional knowledge and hands-on SAP system experience.\n",
+        "whyCourse": "\nThe SAP SD Course Curriculum prepares learners for careers as SAP SD consultants, business analysts, and ERP professionals by focusing on real business scenarios and industry best practices.\nThousands of companies worldwide rely on SAP systems to manage their business processes. SAP SD professionals are highly valued because they help organizations manage their sales operations efficiently.\nProfessionals with SAP SD skills often receive attractive salary packages due to their specialized ERP knowledge and business process expertise.\n",
+        "keyBenefits": [
+            "Configure enterprise structure and master data in SAP SD",
+            "Manage sales orders, deliveries, and billing processes",
+            "Implement pricing and credit management",
+            "Integrate SAP SD with other modules such as MM, FI, and PP",
+            "Analyze sales performance using reporting and analytics tools",
+            "Master Order-to-Cash (O2C) business processes",
+            "Hands-on SAP system practice with real-time projects",
+            "Comprehensive certification and interview preparation"
+        ],
+        "whyChooseNxGen": [
+            "Live interactive training sessions",
+            "Real-time projects and case studies",
+            "Updated SAP S/4HANA curriculum",
+            "Expert trainer guidance",
+            "Mock interviews and career support",
+            "Placement assistance",
+            "Affordable course fees",
+            "Hands-on SAP practice system access"
+        ],
+        "keyTopics": [
+            "Sales Order Processing",
+            "Pricing and Condition Techniques",
+            "Delivery and Shipping Management",
+            "Billing and Invoice Processing",
+            "Real-time business scenarios"
+        ],
+        "careerOpportunities": [
+            "SAP SD Consultant",
+            "SAP Functional Analyst",
+            "Sales Process Expert",
+            "Business Analyst – SAP SD",
+            "Order-to-Cash (O2C) Consultant",
+            "SAP Sales Architect",
+            "Functional Lead",
+            "Distribution and Logistics Consultant"
+        ],
+        "feesAndDuration": "\nEnroll in our SAP SD Course to gain top-tier SAP expertise with affordable fees and flexible schedules. NXGEN Tech Academy is a leading SAP SD training institute that offers competitive pricing.\nDuration: 45 Days (Live Interactive Sessions)\nBatch Type: Weekday (Mon-Fri) & Weekend (Sat-Sun)\nCertification Assistance: We provide step-by-step guidance for SAP SD certification.\n",
+        "conclusion": "\nThe SAP SD Course Curriculum at NXGEN Tech Academy is the ultimate pathway to becoming a skilled SAP SD professional. Enroll now to take the first step toward a successful ERP career.\n",
+        "curriculum": [
+            {
+                "module": "Enterprise Structure & Sales Overview",
+                "topics": [
+                    "Introduction to SAP ERP and S/4HANA",
+                    "Overview of SAP SD organizational units",
+                    "Defining and assigning Sales Organization, Distribution Channel, and Division",
+                    "Mapping sales offices and sales groups",
+                    "Understanding the Order-to-Cash (O2C) lifecycle"
+                ]
+            },
+            {
+                "module": "Master Data Management",
+                "topics": [
+                    "Business Partner (BP) approach in S/4HANA",
+                    "Customer Master Data configuration",
+                    "Material Master Data – Sales and distribution views",
+                    "Customer-Material Info record",
+                    "Bill of Materials (BOM) in sales"
+                ]
+            },
+            {
+                "module": "Sales Document Management",
+                "topics": [
+                    "Controlling sales document types (Inquiry, Quotation, Sales Order)",
+                    "Defining Item Categories and Schedule Line Categories",
+                    "Copy control at header, item, and schedule line levels",
+                    "managing incomplete logs in sales documents",
+                    "Working with delivery-dependent and delivery-independent documents"
+                ]
+            },
+            {
+                "module": "Pricing and Condition Technique",
+                "topics": [
+                    "Fundamentals of condition technique in pricing",
+                    "Creating Condition Tables, Access Sequences, and Condition Types",
+                    "Defining Pricing Procedures and determination rules",
+                    "Configuring discounts, surcharges, and freight charges",
+                    "Working with tax determination and free goods processing"
+                ]
+            },
+            {
+                "module": "Shipping and Delivery Processing",
+                "topics": [
+                    "Defining shipping points and loading points",
+                    "Delivery document types and item categories",
+                    "Picking, packing, and Goods Issue (PGI) processes",
+                    "Routes and stage determination in shipping",
+                    "Monitoring outbound delivery and stock availability"
+                ]
+            },
+            {
+                "module": "Billing and Integration",
+                "topics": [
+                    "Billing document types and invoice generation",
+                    "Cancellation of billing documents",
+                    "Integration of SAP SD with Finance (FI), Materials (MM), and Production (PP)",
+                    "Handling credit memos and debit memos",
+                    "Credit Management and Risk Management in S/4HANA"
+                ]
+            },
+            {
+                "module": "Advanced Sales Scenarios",
+                "topics": [
+                    "Processing Returns and Credit/Debit Note requests",
+                    "Consignment stock processing",
+                    "Third-party order processing",
+                    "Intercompany sales and stock transport orders (STO)",
+                    "Best practices in SAP SD implementation"
+                ]
+            },
+            {
+                "module": "Certification and Interview Preparation",
+                "topics": [
+                    "SAP SD on S/4HANA certification overview",
+                    "Real-time SAP SD interview questions",
+                    "Resume preparation and job role guidance"
+                ]
+            }
+        ]
+    }
+}
