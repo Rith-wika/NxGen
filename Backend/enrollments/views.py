@@ -9,6 +9,7 @@ from django.conf import settings
 import random
 import string
 from .permissions import IsAdminOnly
+from accounts.permissions import IsStudent
 from .tasks import (
     send_admin_enrollment_email_sync,
     send_student_approval_email_sync,
@@ -196,6 +197,7 @@ class RejectEnrollmentView(APIView):
 
 
 class CreateOrderView(APIView):
+    permission_classes = [IsStudent]
 
     def post(self, request):
         amount = request.data.get("amount")  # in rupees
@@ -255,6 +257,7 @@ class CreateOrderView(APIView):
 
 
 class VerifyPaymentView(APIView):
+    permission_classes = [IsStudent]
 
     def post(self, request):
         data = request.data
