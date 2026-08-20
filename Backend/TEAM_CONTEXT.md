@@ -106,6 +106,20 @@ An education platform ("NxGen Tech Academy") — course catalog (SAP, AI/ML, Pyt
 
 ## Change Log
 
+### 2026-08-20 — Swetha D + Claude (continued)
+
+**Added — Incremental payments with a per-payment history log**
+Previously "Update Payment Details" (`PaymentDialog.tsx`) worked as an absolute overwrite: it prefilled the field with the current cumulative `payment_paid` and PUT the typed value back as the new total — meaning the admin had to already know and re-type the running total to add a new payment. Changed to additive: the admin now only enters the amount being paid *right now*.
+- **New model**: `enrollments.PaymentTransaction` (`payment_detail` FK, `amount`, `paid_at` auto-timestamp) — one row per payment, migration `0006_paymenttransaction`, applied locally.
+- **Changed**: `EnrollmentPaymentDetailView.post()` (`POST /api/enrollments/<id>/payment-details/`) no longer creates-only-if-missing with an absolute amount — it now always adds the given `payment_paid` amount onto whatever `PaymentDetail.payment_paid` already is (`get_or_create` + `+=` + `.save()`, which recalculates `remaining_balance` and `enrollment.fee_status` via existing model logic), and logs a `PaymentTransaction` row each call. The old inline fee_status-recalculation block in this view was removed as redundant — `PaymentDetail.save()` already does this.
+- `PUT`/`PATCH` on the same endpoint (`updatePaymentDetails`) were left as absolute-overwrite, unchanged — nothing currently calls them (frontend now always uses the additive POST), kept only in case something else needs a hard correction/reset later.
+- `PaymentDetailSerializer` now nests `transactions` (newest first) — surfaced in `StudentDetailPage.tsx`'s Payment Summary card as a small date/amount history list, and in `PaymentDialog.tsx` as read-only "Total Fee" / "Already Paid" context fields alongside the new blank "New Payment Amount" input.
+- Verified end-to-end against the local backend: ₹30,000 fee → pay ₹2,000 → due ₹28,000 → pay ₹1,000 more → due ₹27,000, both transactions logged newest-first.
+- The new "Amount Paid" field added earlier today to `EnrollmentForm.tsx` (Add Student flow) is unaffected — it's always the first payment on a brand-new `PaymentDetail` (0 + amount), so additive vs. absolute makes no difference there.
+
+**Fixed — student self-service Razorpay payments were invisible in the new payment log**
+`VerifyPaymentView.post()` (`POST /api/enrollments/verify-payment/`, hit by the student "My Payments"/Pay Now flow in `Payments.tsx`) already incremented `PaymentDetail.payment_paid` correctly, but never created a `PaymentTransaction` row — so a payment made by a student showed up correctly in their own running total, but was silently missing from the admin's Payment History log added above (which only saw payments recorded through the admin-side endpoint). Fixed by adding the same `PaymentTransaction.objects.create(...)` call there, logging the same `increment` amount that gets added to `payment_paid`. Verified by simulating a signed Razorpay verify request (test student/enrollment created and deleted via Django shell, since the local test keys can't complete a real Razorpay round trip per the Outstanding item below — confirmed the code takes the existing `except: amount_paid = data.get("amount")` fallback path, which is what actually runs in practice today anyway).
+
 ### 2026-08-17 — Swetha D + Claude
 
 **Fixed — `Batch.name` serialization crashes (500 errors)**
@@ -117,6 +131,15 @@ An education platform ("NxGen Tech Academy") — course catalog (SAP, AI/ML, Pyt
 
 **Fixed — missing permission checks on payment endpoints**
 `enrollments/views.py` — `CreateOrderView` (`POST /api/enrollments/create-order/`) and `VerifyPaymentView` (`POST /api/enrollments/verify-payment/`) had no `permission_classes` set at all, and the project has no `DEFAULT_PERMISSION_CLASSES` configured globally either — so both were fully open to **unauthenticated** requests (DRF's implicit default is `AllowAny`). Added `permission_classes = [IsStudent]` (from `accounts.permissions`) to both, since these are only ever called from the student-facing `Payments.tsx`. Verified: unauthenticated → 401, non-student role → 403, student → reaches the view logic correctly.
+
+### 2026-08-20 — Swetha D + Claude
+
+**Fixed — Admin Transactions ledger showing ₹0 for every row**
+`GET /api/enrollments/` (`EnrollmentSerializer`) only exposed payment numbers nested under a `payment_detail` object (`PaymentDetail` is a separate model/table, one-to-many via `related_name="payment_details"`). Several admin frontend pages assume flat top-level fields instead — `Finance/Transactions.tsx`, `Finance/Reports.tsx`, `Finance/Refunds.tsx`, `StudentDetailPage.tsx` all read `tx.fee_amount`/`tx.payment_paid`/`tx.remaining_balance` directly off the enrollment object, which were always `undefined` → rendered as ₹0. Non-money fields (`name`, `email`, `fee_status`) rendered fine since those are real top-level `Enrollment` model fields, which is why only the currency columns were blank.
+- Confirmed the nested-vs-flat split is intentional/established elsewhere: student-facing pages (`StudentPaymentHistory.tsx`, `StudentInvoices.tsx`, `Payments.tsx`) correctly consume the nested `payment_detail` shape from `StudentEnrolledCourseSerializer`. Only the admin-side `EnrollmentSerializer` was missing flat fields the admin frontend already expected (`EnrollmentData` TS interface already declared them, unused until now).
+- **Fix**: added `fee_amount`/`payment_paid`/`remaining_balance` as `SerializerMethodField`s on `EnrollmentSerializer` (`Backend/enrollments/serializers.py`) that mirror the nested `payment_detail` values (falling back to `course.price` when no `PaymentDetail` row exists yet). No frontend changes needed — fixes Transactions, Reports, Refunds, and StudentDetailPage in one place. `payment_detail`/`payment_details` fields left as-is.
+- Note: `payment_details` (plural field, `source='payment_detail'`) on `EnrollmentSerializer` has always silently resolved to nothing in the output — wrong source string (model's reverse accessor is `payment_details`, not singular), but since it's `read_only=True` (→ `required=False`), DRF's `get_attribute` raises `SkipField` instead of erroring. Dead field, harmless, not fixed since nothing reads it.
+- Each of the three new method fields does its own `obj.payment_details.first()` query (plus the existing `get_payment_detail` doing the same) — real N+1 on large enrollment lists, not addressed here since list sizes are currently small.
 
 **Outstanding — Razorpay test credentials rejected by Razorpay's API**
 `POST /api/enrollments/create-order/` returns `400 {"error": "Razorpay Bad Request: Authentication failed"}` for every attempt, in both local dev and production. Root-caused all the way through: `RAZORPAY_KEY_ID`/`RAZORPAY_KEY_SECRET` in `Backend/.env` are present, correctly formatted, and load cleanly into Django settings with no corruption — the failure is Razorpay's own API rejecting the key pair as invalid/inactive. This blocks the entire student "Pay Now" flow at the very first step (order creation never succeeds, so the Razorpay checkout popup never opens).
